@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @MappedSuperclass
@@ -40,5 +41,10 @@ public abstract class AuditModel implements Serializable {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public AuditModel() {
+        createdAt = java.sql.Date.valueOf(LocalDate.now());
+        updatedAt = java.sql.Date.valueOf(LocalDate.now());
     }
 }

@@ -1,6 +1,5 @@
 package com.projet_consolidation.projet_consolidation.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projet_consolidation.projet_consolidation.model.Utilisateur;
 import com.projet_consolidation.projet_consolidation.service.UtilisateurService;
 import org.junit.jupiter.api.Test;
@@ -21,10 +20,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
