@@ -1,47 +1,54 @@
 package com.projet_consolidation.projet_consolidation.controller;
 
-
-import com.projet_consolidation.projet_consolidation.ProjetConsolidationApplication;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.projet_consolidation.projet_consolidation.model.Utilisateur;
+import com.projet_consolidation.projet_consolidation.service.UtilisateurService;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = ProjetConsolidationApplication.class,
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
+@ExtendWith(SpringExtension.class)
+@WebMvcTest
 public class UtilisateurControllerTest {
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    MockMvc mockMvc;
 
-    @LocalServerPort
-    private int port;
+    @MockBean
+    private UtilisateurService utilisateurService;
 
-    private String getRootUrl() {
-        return "http://localhost:" + port + "/api/v1";
-    }
-
-    /**
-     * Here we test that we can get all the users in the database
-     * using the GET method
-     */
     @Test
-    public void testGetAllUsers(){
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<String> entity = new HttpEntity<String>(null, headers);
-        ResponseEntity<String> response = restTemplate.exchange(getRootUrl() + "/users",
-                HttpMethod.GET, entity, String.class);
+    public void getAllUsers() throws Exception {
+        List<Utilisateur> utilisateurs = new ArrayList<>();
+        utilisateurs.add(new Utilisateur("walid", "bizid", "walid.bizid@hotmail.com", LocalDate.of(1994,05,29)));
+        utilisateurs.add(new Utilisateur("Majdi", "bizid", "majdi.bizid@hotmail.com", LocalDate.of(1997,05,25)));
+        Page<Utilisateur> pagedUsers = new PageImpl(utilisateurs);
+        Pageable pageRequest = PageRequest.of(0, 4);
+        when(utilisateurService.getAllUsers(pageRequest)).thenReturn(pagedUsers);
 
-        Assert.assertNotNull(response.getBody());
+        mockMvc.perform(MockMvcRequestBuilders.get("http://localhost/api/v1/users")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(jsonPath("$", hasSize(2))).andDo(print());
     }
+
 
 }

@@ -1,6 +1,7 @@
 package com.projet_consolidation.projet_consolidation.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -38,8 +39,7 @@ public class Utilisateur extends AuditModel {
             name = "date_de_naissance",
             nullable = false
     )
-    @Temporal(TemporalType.DATE)
-    private Date date_de_naissance;
+    private LocalDate date_de_naissance;
 
     public Long getId() {
         return id;
@@ -73,11 +73,22 @@ public class Utilisateur extends AuditModel {
         this.email = email;
     }
 
-    public Date getDate_de_naissance() {
+    public LocalDate getDate_de_naissance() {
         return date_de_naissance;
     }
 
-    public void setDate_de_naissance(Date date_de_naissance) {
+    public void setDate_de_naissance(LocalDate date_de_naissance) {
         this.date_de_naissance = date_de_naissance;
+    }
+
+    public Utilisateur(String prenom, String nom, String email, LocalDate date_de_naissance) {
+        super();
+        this.prenom = prenom;
+        this.nom = nom;
+        this.date_de_naissance = date_de_naissance;
+        this.email = email;
+    }
+
+    public Utilisateur() {
     }
 }
