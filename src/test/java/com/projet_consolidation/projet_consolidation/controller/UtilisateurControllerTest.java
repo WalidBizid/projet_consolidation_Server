@@ -25,6 +25,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest
@@ -45,9 +46,9 @@ public class UtilisateurControllerTest {
         Pageable pageRequest = PageRequest.of(0, 4);
         when(utilisateurService.getAllUsers(pageRequest)).thenReturn(pagedUsers);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("http://localhost/api/v1/users")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(jsonPath("$", hasSize(2))).andDo(print());
+        ).andExpect(status().isOk()).andDo(print());
     }
 
 
