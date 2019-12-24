@@ -2,6 +2,8 @@ package com.projet_consolidation.projet_consolidation.service;
 
 import com.projet_consolidation.projet_consolidation.model.Utilisateur;
 import com.projet_consolidation.projet_consolidation.repository.UtilisateurRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,14 +24,30 @@ public class UtilisateurServiceTest {
     @Autowired
     UtilisateurService utilisateurService;
 
+    Utilisateur user;
+
+    @BeforeEach
+    void beforeEach() {
+        this.user = new Utilisateur("walid", "bizid", "walid.bizid@hotmail.com", LocalDate.of(1994,05,29));
+        utilisateurRepository.save(user);
+    }
+
     @Test
     public void getAllUsers(){
-        Utilisateur user1 = new Utilisateur("walid", "bizid", "walid.bizid@hotmail.com", LocalDate.of(1994,05,29));
-        utilisateurRepository.save(user1);
 
         Pageable pageRequest = PageRequest.of(0, 4);
         Page<Utilisateur> utilisateurPage = utilisateurService.getAllUsers(pageRequest);
         Utilisateur utilisateur = utilisateurPage.getContent().get(utilisateurPage.getContent().size()-1);
-        assertEquals(user1.getNom(), utilisateur.getNom());
+        assertEquals(user.getNom(), utilisateur.getNom());
+    }
+
+    @Test
+    public void saveUser(){
+        assertEquals(1.0, utilisateurRepository.count());
+    }
+
+    @AfterEach
+    void afterEach(){
+        utilisateurRepository.deleteAll();
     }
 }

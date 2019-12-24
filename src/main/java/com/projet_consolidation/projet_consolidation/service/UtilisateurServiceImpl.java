@@ -1,15 +1,11 @@
 package com.projet_consolidation.projet_consolidation.service;
 
+import com.projet_consolidation.projet_consolidation.model.Utilisateur;
 import com.projet_consolidation.projet_consolidation.repository.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import com.projet_consolidation.projet_consolidation.model.Utilisateur;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService {
@@ -18,8 +14,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     UtilisateurRepository utilisateurRepository;
 
     @Override
-    public void saveUser(Utilisateur utilisateur) {
-
+    public Utilisateur saveUser(Utilisateur utilisateur) {
+        return utilisateurRepository.save(utilisateur);
     }
 
     @Override

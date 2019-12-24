@@ -1,5 +1,6 @@
 package com.projet_consolidation.projet_consolidation.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projet_consolidation.projet_consolidation.model.Utilisateur;
 import com.projet_consolidation.projet_consolidation.service.UtilisateurService;
 import org.junit.jupiter.api.Test;
@@ -14,14 +15,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
@@ -46,6 +51,24 @@ public class UtilisateurControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk()).andDo(print());
+    }
+
+    @Test
+    public void createdUserSuccefully() throws Exception {
+        Utilisateur utilisateur = new Utilisateur("Mohamed", "bizid", "Mohamed.bizid@hotmail.com", LocalDate.of(2009,04,26));
+        when(utilisateurService.saveUser(any(Utilisateur.class))).thenReturn(utilisateur);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String utilisateurJSON = objectMapper.writeValueAsString(utilisateur);
+
+        ResultActions result = mockMvc.perform(post("/api/v1/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(utilisateurJSON)
+        );
+
+        result.andExpect(status().isCreated())
+                .andExpect(jsonPath("$.nom").value("bizid"))
+                .andExpect(jsonPath("$.prenom").value("Mohamed"));
     }
 
 
