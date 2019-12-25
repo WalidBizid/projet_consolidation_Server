@@ -46,6 +46,12 @@ public class UtilisateurServiceTest {
         assertEquals(1.0, utilisateurRepository.count());
     }
 
+    @Test
+    public void shouldDeleteUser() {
+        utilisateurService.deleteUser(user.getId());
+        assertEquals(0, utilisateurRepository.count());
+    }
+
     @AfterEach
     void afterEach(){
         utilisateurRepository.deleteAll();
