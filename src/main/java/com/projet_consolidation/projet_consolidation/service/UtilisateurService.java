@@ -17,5 +17,5 @@ public interface UtilisateurService {
 
     void deleteUser(Long userId);
 
-    Optional<Utilisateur> getUserById(Long id);
+    Optional<Utilisateur> getUserById(long id);
 }

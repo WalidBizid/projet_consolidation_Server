@@ -40,6 +40,14 @@ public class Utilisateur extends AuditModel {
     )
     private LocalDate date_de_naissance;
 
+    public Utilisateur(Long userId, String prenom, String nom, String email, LocalDate date_de_naissance) {
+        this(prenom,
+                nom,
+                email,
+                date_de_naissance);
+        this.id = userId;
+    }
+
     public Long getId() {
         return id;
     }
@@ -87,16 +95,6 @@ public class Utilisateur extends AuditModel {
         this.date_de_naissance = date_de_naissance;
         this.email = email;
     }
-
-    public Utilisateur(long id, String prenom, String nom, String email, LocalDate date_de_naissance) {
-        super();
-        this.id = id;
-        this.prenom = prenom;
-        this.nom = nom;
-        this.date_de_naissance = date_de_naissance;
-        this.email = email;
-    }
-
     public Utilisateur() {
     }
 }

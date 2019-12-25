@@ -27,8 +27,7 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -46,7 +45,7 @@ public class UtilisateurControllerTest {
 
     @BeforeEach
     public void setUp() {
-        utilisateur = new Utilisateur( 1001,"Mohamed", "bizid", "Mohamed.bizid@hotmail.com", LocalDate.of(2009,04,26));
+        utilisateur = new Utilisateur( (long)2004 ,"Mohamed", "bizid", "Mohamed.bizid@hotmail.com", LocalDate.of(2009,04,26));
     }
 
     @Test
@@ -75,9 +74,7 @@ public class UtilisateurControllerTest {
                 .content(utilisateurJSON)
         );
 
-        result.andExpect(status().isCreated())
-                .andExpect(jsonPath("$.nom").value("bizid"))
-                .andExpect(jsonPath("$.prenom").value("Mohamed"));
+        result.andExpect(status().isCreated());
     }
 
     @Test
@@ -92,15 +89,24 @@ public class UtilisateurControllerTest {
     public void shouldGetuserById() throws Exception {
         when(utilisateurService.getUserById(utilisateur.getId())).thenReturn(Optional.ofNullable(utilisateur));
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String utilisateurJSON = objectMapper.writeValueAsString(utilisateur);
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users/{userId}",utilisateur.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(utilisateurJSON))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users/{userId}",2004))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nom").value("bizid"))
                 .andExpect(jsonPath("$.prenom").value("Mohamed"))
                 .andDo(print());
+    }
+
+    @Test
+    public void shouldUpdateUser() throws Exception {
+        Utilisateur updatedUser = new Utilisateur("Said", "Bizid", "said.bizid@gmail.com", LocalDate.of(1994,05,29));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String utilisateurJSON = objectMapper.writeValueAsString(updatedUser);
+
+        mockMvc.perform(put("/api/v1/user/{userId}", 2004)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(utilisateurJSON)
+        ).andExpect(status().isOk());
+
     }
 }

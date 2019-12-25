@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -45,8 +44,19 @@ public class UtilisateurController {
     }
 
     @GetMapping("/users/{userId}")
-    public ResponseEntity<Optional<Utilisateur>> toGetUserById(@PathVariable long userId){
-        return new ResponseEntity<>(utilisateurService.getUserById(userId), HttpStatus.OK);
+    public ResponseEntity<Utilisateur> toGetUserById(@PathVariable long userId){
+        return new ResponseEntity<>(utilisateurService.getUserById(userId).get(), HttpStatus.OK);
     }
 
+    @PutMapping("/user/{userId}")
+    public ResponseEntity<Utilisateur> toUpdateUser(
+            @PathVariable long userId,
+            @JsonProperty("nom") String nom,
+            @JsonProperty("prenom") String prenom,
+            @JsonProperty("eamil") String email,
+            @JsonProperty("date_de_naissance") @JsonFormat(pattern = "MM/dd/yyyy") LocalDate date_de_naissance
+    ){
+        Utilisateur UpdatedUser = new Utilisateur(userId,prenom,nom,email,date_de_naissance);
+        return new ResponseEntity<>(utilisateurService.updateUser(UpdatedUser), HttpStatus.OK);
+    }
 }
