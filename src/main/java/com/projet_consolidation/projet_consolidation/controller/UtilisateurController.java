@@ -48,7 +48,7 @@ public class UtilisateurController {
         return new ResponseEntity<>(utilisateurService.getUserById(userId).get(), HttpStatus.OK);
     }
 
-    @PutMapping("/user/{userId}")
+    @RequestMapping(value = "user/{userId}", method = RequestMethod.PUT)
     public ResponseEntity<Utilisateur> toUpdateUser(
             @PathVariable long userId,
             @JsonProperty("nom") String nom,
@@ -56,7 +56,7 @@ public class UtilisateurController {
             @JsonProperty("eamil") String email,
             @JsonProperty("date_de_naissance") @JsonFormat(pattern = "MM/dd/yyyy") LocalDate date_de_naissance
     ){
-        Utilisateur UpdatedUser = new Utilisateur(userId,prenom,nom,email,date_de_naissance);
+        Utilisateur UpdatedUser = new Utilisateur(userId,prenom,nom,email,LocalDate.of(date_de_naissance.getYear(),date_de_naissance.getMonth(),date_de_naissance.getDayOfMonth()));
         return new ResponseEntity<>(utilisateurService.updateUser(UpdatedUser), HttpStatus.OK);
     }
 }

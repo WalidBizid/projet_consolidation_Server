@@ -2,6 +2,7 @@ package com.projet_consolidation.projet_consolidation.service;
 
 import com.projet_consolidation.projet_consolidation.model.Utilisateur;
 import com.projet_consolidation.projet_consolidation.repository.UtilisateurRepository;
+import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -57,6 +58,13 @@ public class UtilisateurServiceTest {
     void shouldReturnUserById() {
         List<Utilisateur> utilisateurs = utilisateurRepository.findAll();
         assertEquals(user.getNom(),utilisateurService.getUserById(utilisateurs.get(0).getId()).get().getNom());
+    }
+
+    @Test
+    void shouldUpdateUser() {
+        List<Utilisateur> utilisateurs = utilisateurRepository.findAll();
+        Utilisateur updatedUser = utilisateurService.updateUser(new Utilisateur(utilisateurService.getUserById(utilisateurs.get(0).getId()).get().getId(),"walid", "bizid", "ali.bizid@gmail.com", LocalDate.of(1994,05,29)));
+        Assert.assertEquals("ali.bizid@gmail.com",updatedUser.getEmail());
     }
 
     @AfterEach

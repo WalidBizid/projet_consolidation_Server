@@ -27,7 +27,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public Utilisateur updateUser(Utilisateur utilisateur) {
-        return null;
+        return utilisateurRepository.save(utilisateur);
     }
 
     @Override
