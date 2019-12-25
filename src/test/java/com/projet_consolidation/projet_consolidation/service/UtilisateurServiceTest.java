@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -50,6 +51,12 @@ public class UtilisateurServiceTest {
     public void shouldDeleteUser() {
         utilisateurService.deleteUser(user.getId());
         assertEquals(0, utilisateurRepository.count());
+    }
+
+    @Test
+    void shouldReturnUserById() {
+        List<Utilisateur> utilisateurs = utilisateurRepository.findAll();
+        assertEquals(user.getNom(),utilisateurService.getUserById(utilisateurs.get(0).getId()).get().getNom());
     }
 
     @AfterEach

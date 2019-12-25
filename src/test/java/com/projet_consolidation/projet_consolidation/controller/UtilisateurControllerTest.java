@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -85,5 +86,21 @@ public class UtilisateurControllerTest {
         doNothing().when(utilisateurService).deleteUser(utilisateur.getId());
         mockMvc.perform(delete("/api/v1/user/{userId}",1351))
                 .andExpect(content().string("user deleted successfully"));
+    }
+
+    @Test
+    public void shouldGetuserById() throws Exception {
+        when(utilisateurService.getUserById(utilisateur.getId())).thenReturn(Optional.ofNullable(utilisateur));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String utilisateurJSON = objectMapper.writeValueAsString(utilisateur);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users/{userId}",utilisateur.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(utilisateurJSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nom").value("bizid"))
+                .andExpect(jsonPath("$.prenom").value("Mohamed"))
+                .andDo(print());
     }
 }

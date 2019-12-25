@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -39,8 +40,13 @@ public class UtilisateurController {
 
     @RequestMapping(value = "user/{userId}", method = RequestMethod.DELETE)
     public ResponseEntity<String> toDeleteUser(@PathVariable Long userId){
-        utilisateurService.deleteUser(userId);
-        return new ResponseEntity<>("user deleted successfully", HttpStatus.NO_CONTENT);
+            utilisateurService.deleteUser(userId);
+            return new ResponseEntity<>("user deleted successfully", HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<Optional<Utilisateur>> toGetUserById(@PathVariable long userId){
+        return new ResponseEntity<>(utilisateurService.getUserById(userId), HttpStatus.OK);
     }
 
 }

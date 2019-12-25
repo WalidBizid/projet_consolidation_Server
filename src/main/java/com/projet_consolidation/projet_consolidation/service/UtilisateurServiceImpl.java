@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService {
 
@@ -31,5 +33,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Override
     public void deleteUser(Long userId) {
         utilisateurRepository.deleteById(userId);
+    }
+
+    @Override
+    public Optional<Utilisateur> getUserById(Long id) {
+        return utilisateurRepository.findById(id);
     }
 }
