@@ -3,6 +3,7 @@ package com.projet_consolidation.projet_consolidation.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projet_consolidation.projet_consolidation.model.Utilisateur;
 import com.projet_consolidation.projet_consolidation.service.UtilisateurService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,21 +24,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest
 public class UtilisateurControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @MockBean
     private UtilisateurService utilisateurService;
+
+    Utilisateur utilisateur;
+
+    @BeforeEach
+    public void setUp() {
+        utilisateur = new Utilisateur( 1001,"Mohamed", "bizid", "Mohamed.bizid@hotmail.com", LocalDate.of(2009,04,26));
+    }
 
     @Test
     public void getAllUsers() throws Exception {
@@ -54,8 +63,7 @@ public class UtilisateurControllerTest {
     }
 
     @Test
-    public void createdUserSuccefully() throws Exception {
-        Utilisateur utilisateur = new Utilisateur("Mohamed", "bizid", "Mohamed.bizid@hotmail.com", LocalDate.of(2009,04,26));
+    public void createdUserSuccessfully() throws Exception {
         when(utilisateurService.saveUser(any(Utilisateur.class))).thenReturn(utilisateur);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -71,5 +79,11 @@ public class UtilisateurControllerTest {
                 .andExpect(jsonPath("$.prenom").value("Mohamed"));
     }
 
-
+    @Test
+    public void deleteUserSuccessfully() throws Exception {
+        when(utilisateurService.saveUser(any(Utilisateur.class))).thenReturn(utilisateur);
+        doNothing().when(utilisateurService).deleteUser(utilisateur.getId());
+        mockMvc.perform(delete("/api/v1/user/{userId}",1351))
+                .andExpect(content().string("user deleted successfully"));
+    }
 }

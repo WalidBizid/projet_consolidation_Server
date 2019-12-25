@@ -10,10 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
@@ -39,4 +36,11 @@ public class UtilisateurController {
         Utilisateur utilisateur = new Utilisateur(prenom, nom, email, date_de_naissance);
         return new ResponseEntity<>(utilisateurService.saveUser(utilisateur), HttpStatus.CREATED);
     }
+
+    @RequestMapping(value = "user/{userId}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> toDeleteUser(@PathVariable Long userId){
+        utilisateurService.deleteUser(userId);
+        return new ResponseEntity<>("user deleted successfully", HttpStatus.NO_CONTENT);
+    }
+
 }

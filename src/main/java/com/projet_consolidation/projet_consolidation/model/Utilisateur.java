@@ -2,7 +2,6 @@ package com.projet_consolidation.projet_consolidation.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "utilisateurs")
@@ -83,6 +82,15 @@ public class Utilisateur extends AuditModel {
 
     public Utilisateur(String prenom, String nom, String email, LocalDate date_de_naissance) {
         super();
+        this.prenom = prenom;
+        this.nom = nom;
+        this.date_de_naissance = date_de_naissance;
+        this.email = email;
+    }
+
+    public Utilisateur(long id, String prenom, String nom, String email, LocalDate date_de_naissance) {
+        super();
+        this.id = id;
         this.prenom = prenom;
         this.nom = nom;
         this.date_de_naissance = date_de_naissance;
