@@ -31,6 +31,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * A test class for the user rest API
+ *
+ * @author walid BIZID
+ * @version 1
+ */
 @ExtendWith(SpringExtension.class)
 @WebMvcTest
 public class UtilisateurControllerTest {
@@ -43,13 +49,21 @@ public class UtilisateurControllerTest {
 
     Utilisateur utilisateur;
 
+    /**
+     * Should instantiate a new user before each test
+     */
     @BeforeEach
     public void setUp() {
         utilisateur = new Utilisateur( (long)2004 ,"Mohamed", "bizid", "Mohamed.bizid@hotmail.com", LocalDate.of(2009,04,26));
     }
 
+    /**
+     * Should return all the users by page
+     *
+     * @throws Exception
+     */
     @Test
-    public void getAllUsers() throws Exception {
+    public void shouldGetAllUsers() throws Exception {
         List<Utilisateur> utilisateurs = new ArrayList<>();
         utilisateurs.add(new Utilisateur("walid", "bizid", "walid.bizid@hotmail.com", LocalDate.of(1994,05,29)));
         utilisateurs.add(new Utilisateur("Majdi", "bizid", "majdi.bizid@hotmail.com", LocalDate.of(1997,05,25)));
@@ -62,8 +76,13 @@ public class UtilisateurControllerTest {
         ).andExpect(status().isOk()).andDo(print());
     }
 
+    /**
+     * Should create a new user successfully
+     *
+     * @throws Exception
+     */
     @Test
-    public void createdUserSuccessfully() throws Exception {
+    public void shouldCreateUserSuccessfully() throws Exception {
         when(utilisateurService.saveUser(any(Utilisateur.class))).thenReturn(utilisateur);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -77,16 +96,26 @@ public class UtilisateurControllerTest {
         result.andExpect(status().isCreated());
     }
 
+    /**
+     * Should delete a specific user successfully by his id
+     *
+     * @throws Exception
+     */
     @Test
-    public void deleteUserSuccessfully() throws Exception {
+    public void shouldDeleteUserSuccessfully() throws Exception {
         when(utilisateurService.saveUser(any(Utilisateur.class))).thenReturn(utilisateur);
         doNothing().when(utilisateurService).deleteUser(utilisateur.getId());
         mockMvc.perform(delete("/api/v1/user/{userId}",1351))
                 .andExpect(content().string("user deleted successfully"));
     }
 
+    /**
+     * Should successfully get a specific user by his id
+     *
+     * @throws Exception
+     */
     @Test
-    public void shouldGetuserById() throws Exception {
+    public void shouldGetuserByIdSuccessfully() throws Exception {
         when(utilisateurService.getUserById(utilisateur.getId())).thenReturn(Optional.ofNullable(utilisateur));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users/{userId}",2004))
@@ -96,8 +125,13 @@ public class UtilisateurControllerTest {
                 .andDo(print());
     }
 
+    /**
+     * Should update a specific user successfully
+     *
+     * @throws Exception
+     */
     @Test
-    public void shouldUpdateUser() throws Exception {
+    public void shouldUpdateUserSuccessfully() throws Exception {
         Utilisateur updatedUser = new Utilisateur("Said", "Bizid", "said.bizid@gmail.com", LocalDate.of(1994,05,29));
 
         ObjectMapper objectMapper = new ObjectMapper();
