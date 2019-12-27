@@ -109,6 +109,12 @@ public class UtilisateurControllerTest {
                 .andExpect(content().string("user deleted successfully"));
     }
 
+    @Test
+    public void shouldGetErrorUserNotExistBeforeDelete() throws Exception {
+        mockMvc.perform(delete("/api/v1/user/{userId}",1351))
+                .andExpect(status().isNotFound());
+    }
+
     /**
      * Should successfully get a specific user by his id
      *
@@ -137,7 +143,7 @@ public class UtilisateurControllerTest {
     }
 
     /**
-     * Should get an invalid parameter error
+     * Should get an invalid parameter error ( invalid id )
      *
      * @throws Exception
      */
@@ -163,6 +169,23 @@ public class UtilisateurControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(utilisateurJSON)
         ).andExpect(status().isOk());
+    }
 
+    /**
+     * Should get an error user with entered id not exist
+     *
+     * @throws Exception
+     */
+    @Test
+    void shouldGetErrorUserNotExistBeforeUpdate() throws Exception {
+        Utilisateur updatedUser = new Utilisateur("Said", "Bizid", "said.bizid@gmail.com", LocalDate.of(1994,05,29));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String utilisateurJSON = objectMapper.writeValueAsString(updatedUser);
+
+        mockMvc.perform(put("/api/v1/user/{userId}", 2000)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(utilisateurJSON)
+        ).andExpect(status().isNotFound());
     }
 }

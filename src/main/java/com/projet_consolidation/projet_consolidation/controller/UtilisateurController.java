@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
@@ -60,11 +61,16 @@ public class UtilisateurController {
      *
      * @param userId the id of the user to delete
      * @return a string that mention that the user was deleted with a no content http status
+     * @throws ResponseStatusException if user not exist in database
+     * @throws HttpClientErrorException.BadRequest if entered id in the path not valid
      */
     @RequestMapping(value = "user/{userId}", method = RequestMethod.DELETE)
     public ResponseEntity<String> toDeleteUser(@PathVariable Long userId){
+        if( utilisateurService.getUserById(userId).isPresent()){
             utilisateurService.deleteUser(userId);
             return new ResponseEntity<>("user deleted successfully", HttpStatus.NO_CONTENT);
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
     }
 
     /**
@@ -72,6 +78,8 @@ public class UtilisateurController {
      *
      * @param userId the id of the user to get in the path url
      * @return the user with the given id and with ok http status
+     * @throws ResponseStatusException if user not exist in database
+     * @throws HttpClientErrorException.BadRequest if entered id in the path not valid
      */
     @GetMapping("/users/{userId}")
     public ResponseEntity<Utilisateur> toGetUserById(@PathVariable long userId){
@@ -92,6 +100,7 @@ public class UtilisateurController {
      * @param email the new mail address of the user if changed or the existing one
      * @param date_de_naissance the new birth date of the user if changed or the existing one
      * @return the user entity but with the updated properties with the ok http status
+     * @throws ResponseStatusException if user not exist in database
      */
     @RequestMapping(value = "user/{userId}", method = RequestMethod.PUT)
     public ResponseEntity<Utilisateur> toUpdateUser(
@@ -101,7 +110,11 @@ public class UtilisateurController {
             @JsonProperty("eamil") String email,
             @JsonProperty("date_de_naissance") @JsonFormat(pattern = "MM/dd/yyyy") LocalDate date_de_naissance
     ){
-        Utilisateur UpdatedUser = new Utilisateur(userId,prenom,nom,email,LocalDate.of(date_de_naissance.getYear(),date_de_naissance.getMonth(),date_de_naissance.getDayOfMonth()));
-        return new ResponseEntity<>(utilisateurService.updateUser(UpdatedUser), HttpStatus.OK);
+        if(utilisateurService.getUserById(userId).isPresent()) {
+            Utilisateur UpdatedUser = new Utilisateur(userId, prenom, nom, email, LocalDate.of(date_de_naissance.getYear(), date_de_naissance.getMonth(), date_de_naissance.getDayOfMonth()));
+            return new ResponseEntity<>(utilisateurService.updateUser(UpdatedUser), HttpStatus.OK);
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
     }
+
 }
