@@ -12,8 +12,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -73,7 +75,12 @@ public class UtilisateurController {
      */
     @GetMapping("/users/{userId}")
     public ResponseEntity<Utilisateur> toGetUserById(@PathVariable long userId){
-        return new ResponseEntity<>(utilisateurService.getUserById(userId).get(), HttpStatus.OK);
+        Optional<Utilisateur> result = utilisateurService.getUserById(userId);
+        if( result.isPresent()){
+            Utilisateur searchedUser = result.get();
+            return new ResponseEntity<>(searchedUser, HttpStatus.OK);
+        }
+    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
     }
 
     /**

@@ -126,6 +126,28 @@ public class UtilisateurControllerTest {
     }
 
     /**
+     * Should get an not found error when a user dosen't exist
+     *
+     * @throws Exception
+     */
+    @Test
+    public void shouldGetErrorUserNotFound() throws Exception {
+        mockMvc.perform(get("/api/v1/users/{userId}", 2000))
+                .andExpect(status().isNotFound());
+    }
+
+    /**
+     * Should get an invalid parameter error
+     *
+     * @throws Exception
+     */
+    @Test
+    public void shouldGetErrorNoValidId() throws Exception {
+        mockMvc.perform(get("/api/v1/users/{userId}", 2+"000a"))
+                .andExpect(status().isBadRequest());
+    }
+
+    /**
      * Should update a specific user successfully
      *
      * @throws Exception
