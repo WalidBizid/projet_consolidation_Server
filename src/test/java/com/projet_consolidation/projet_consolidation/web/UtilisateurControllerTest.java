@@ -1,8 +1,8 @@
-package com.projet_consolidation.projet_consolidation.controller;
+package com.projet_consolidation.projet_consolidation.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.projet_consolidation.projet_consolidation.model.Utilisateur;
-import com.projet_consolidation.projet_consolidation.service.UtilisateurService;
+import com.projet_consolidation.projet_consolidation.business.UtilisateurService;
+import com.projet_consolidation.projet_consolidation.infrastructure.Utilisateur;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

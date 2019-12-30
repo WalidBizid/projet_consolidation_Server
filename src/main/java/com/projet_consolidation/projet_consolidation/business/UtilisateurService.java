@@ -1,7 +1,7 @@
-package com.projet_consolidation.projet_consolidation.service;
+package com.projet_consolidation.projet_consolidation.business;
 
-import com.projet_consolidation.projet_consolidation.model.Utilisateur;
-import com.projet_consolidation.projet_consolidation.repository.UtilisateurRepository;
+import com.projet_consolidation.projet_consolidation.infrastructure.Utilisateur;
+import com.projet_consolidation.projet_consolidation.infrastructure.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UtilisateurServiceImpl implements UtilisateurService {
+public class UtilisateurService {
 
     @Autowired
     UtilisateurRepository utilisateurRepository;
@@ -21,7 +21,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
      * @param utilisateur the user to save in the database
      * @return the user saved in the database
      */
-    @Override
     public Utilisateur saveUser(Utilisateur utilisateur) {
         return utilisateurRepository.save(utilisateur);
     }
@@ -32,7 +31,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
      * @param pageable indicate that the returned users should be by page
      * @return All users by page
      */
-    @Override
     public Page<Utilisateur> getAllUsers(Pageable pageable) {
         return utilisateurRepository.findAll(pageable);
     }
@@ -43,7 +41,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
      * @param utilisateur the user with the new properties
      * @return the updated user from the database
      */
-    @Override
     public Utilisateur updateUser(Utilisateur utilisateur) {
         return utilisateurRepository.save(utilisateur);
     }
@@ -53,7 +50,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
      *
      * @param userId the user's id to delete
      */
-    @Override
     public void deleteUser(Long userId) {
         utilisateurRepository.deleteById(userId);
     }
@@ -64,7 +60,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
      * @param id the user's id to return
      * @return the user with the specific id
      */
-    @Override
     public Optional<Utilisateur> getUserById(long id) {
         return utilisateurRepository.findById(id);
     }

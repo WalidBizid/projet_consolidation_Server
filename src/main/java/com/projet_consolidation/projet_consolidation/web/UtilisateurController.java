@@ -1,11 +1,11 @@
-package com.projet_consolidation.projet_consolidation.controller;
+package com.projet_consolidation.projet_consolidation.web;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.projet_consolidation.projet_consolidation.model.Utilisateur;
-import com.projet_consolidation.projet_consolidation.service.UtilisateurService;
+import com.projet_consolidation.projet_consolidation.business.UtilisateurService;
+import com.projet_consolidation.projet_consolidation.infrastructure.Utilisateur;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -64,7 +64,7 @@ public class UtilisateurController {
      * @throws ResponseStatusException if user not exist in database
      * @throws HttpClientErrorException.BadRequest if entered id in the path not valid
      */
-    @RequestMapping(value = "user/{userId}", method = RequestMethod.DELETE)
+    @DeleteMapping("user/{userId}")
     public ResponseEntity<String> toDeleteUser(@PathVariable Long userId){
         if( utilisateurService.getUserById(userId).isPresent()){
             utilisateurService.deleteUser(userId);
@@ -102,7 +102,7 @@ public class UtilisateurController {
      * @return the user entity but with the updated properties with the ok http status
      * @throws ResponseStatusException if user not exist in database
      */
-    @RequestMapping(value = "user/{userId}", method = RequestMethod.PUT)
+    @PutMapping("user/{userId}")
     public ResponseEntity<Utilisateur> toUpdateUser(
             @PathVariable long userId,
             @JsonProperty("nom") String nom,

@@ -1,8 +1,7 @@
-package com.projet_consolidation.projet_consolidation.repository;
+package com.projet_consolidation.projet_consolidation.infrastructure;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.projet_consolidation.projet_consolidation.model.Utilisateur;
 
 
 @Repository

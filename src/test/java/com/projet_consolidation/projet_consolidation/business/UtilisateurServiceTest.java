@@ -1,7 +1,7 @@
-package com.projet_consolidation.projet_consolidation.service;
+package com.projet_consolidation.projet_consolidation.business;
 
-import com.projet_consolidation.projet_consolidation.model.Utilisateur;
-import com.projet_consolidation.projet_consolidation.repository.UtilisateurRepository;
+import com.projet_consolidation.projet_consolidation.infrastructure.Utilisateur;
+import com.projet_consolidation.projet_consolidation.infrastructure.UtilisateurRepository;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

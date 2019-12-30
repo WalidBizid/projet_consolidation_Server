@@ -1,4 +1,4 @@
-package com.projet_consolidation.projet_consolidation.model;
+package com.projet_consolidation.projet_consolidation.infrastructure;
 
 import javax.persistence.*;
 import java.time.LocalDate;
