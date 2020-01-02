@@ -1,9 +1,9 @@
 package com.projet_consolidation.projet_consolidation.web;
 
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projet_consolidation.projet_consolidation.business.UtilisateurService;
 import com.projet_consolidation.projet_consolidation.infrastructure.Utilisateur;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,17 @@ public class UtilisateurController {
     @Autowired
     private UtilisateurService utilisateurService;
 
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+//    DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+//    private static final LocalDate simpleDateFormat = LocalDate.parse(,FORMATTER);
+//
+//
+//    private UtilisateurDTO getUtilisateurDTOFromJson(final String jsonUtilisateurDTO) throws IOException {
+//        return objectMapper.setDateFormat(FORMATTER).readValue(jsonUtilisateurDTO, UtilisateurDTO.class);
+//    }
     /**
      * Get All users request
      *
@@ -46,7 +57,6 @@ public class UtilisateurController {
      * @return the user created
      */
     @PostMapping("/user")
-    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public ResponseEntity<Utilisateur> toCreateUser(@JsonProperty("nom") String nom,
                                                     @JsonProperty("prenom") String prenom,
                                                     @JsonProperty("eamil") String email,
