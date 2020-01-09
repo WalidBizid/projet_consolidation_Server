@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,6 +35,8 @@ public class UtilisateurService {
     public Page<Utilisateur> getAllUsers(Pageable pageable) {
         return utilisateurRepository.findAll(pageable);
     }
+
+    public List<Utilisateur> getUsers(){ return  utilisateurRepository.findAll(); }
 
     /**
      * Update a specific user in the database
