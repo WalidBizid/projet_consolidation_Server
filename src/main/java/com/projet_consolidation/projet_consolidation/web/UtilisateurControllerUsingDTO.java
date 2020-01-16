@@ -32,7 +32,7 @@ public class UtilisateurControllerUsingDTO {
     @PostMapping("/user")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public UtilisateurDTO createPost(@RequestBody UtilisateurDTO utilisateurDTO) {
+    public UtilisateurDTO createUser(@RequestBody UtilisateurDTO utilisateurDTO) {
         Utilisateur utilisateur = convertToEntity(utilisateurDTO);
         Utilisateur utilisateurCreated = utilisateurService.saveUser(utilisateur);
         return convertToDto(utilisateurCreated);
@@ -40,7 +40,7 @@ public class UtilisateurControllerUsingDTO {
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updatePost(@RequestBody UtilisateurDTO utilisateurDTO) {
+    public void updateUser(@RequestBody UtilisateurDTO utilisateurDTO) {
         try {
             Utilisateur utilisateur = convertToEntity(utilisateurDTO);
             utilisateurService.updateUser(utilisateur);
@@ -51,7 +51,7 @@ public class UtilisateurControllerUsingDTO {
 
     @GetMapping(value = "/{id}")
     @ResponseBody
-    public UtilisateurDTO getPost(@PathVariable("id") Long id) {
+    public UtilisateurDTO getSpecificUser(@PathVariable("id") Long id) {
         try {
             return convertToDto(utilisateurService.getUserById(id).get());
         }catch (Exception e){
