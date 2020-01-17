@@ -38,7 +38,7 @@ public class UtilisateurControllerUsingDTO {
         return convertToDto(utilisateurCreated);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/user/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void updateUser(@RequestBody UtilisateurDTO utilisateurDTO) {
         try {
@@ -49,7 +49,7 @@ public class UtilisateurControllerUsingDTO {
         }
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/user/{id}")
     @ResponseBody
     public UtilisateurDTO getSpecificUser(@PathVariable("id") Long id) {
         try {
