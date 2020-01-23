@@ -40,10 +40,17 @@ public class UtilisateurControllerUsingDTO {
 
     @PutMapping(value = "/user/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateUser(@RequestBody UtilisateurDTO utilisateurDTO) {
+    public void updateUser(@PathVariable("id") Long id ,@RequestBody UtilisateurDTO utilisateurDTO) {
         try {
             Utilisateur utilisateur = convertToEntity(utilisateurDTO);
-            utilisateurService.updateUser(utilisateur);
+            Utilisateur updatedUser = utilisateurService.getUserById(id).get();
+
+            updatedUser.setNom(utilisateur.getNom());
+            updatedUser.setPrenom(utilisateur.getPrenom());
+            updatedUser.setEmail(utilisateur.getEmail());
+            updatedUser.setDate_de_naissance(utilisateur.getDate_de_naissance());
+
+            utilisateurService.updateUser(updatedUser);
         }catch (Exception e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
         }
